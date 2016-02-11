@@ -2,7 +2,7 @@ package io.github.endreman0.calculator.error;
 
 import io.github.endreman0.calculator.token.type.Type;
 
-public class NoSuchInstanceFunctionException extends ProcessorException{
+public class NoSuchInstanceFunctionException extends EvaluatorException{
 	private static final long serialVersionUID = 1L;
 	public NoSuchInstanceFunctionException(Class<? extends Type> obj, String name, Class<? extends Type>[] args){
 		super(String.format("Type %s has no function \"%s\" with args %s", obj, name, format(args)));

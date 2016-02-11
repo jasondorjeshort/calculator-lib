@@ -9,7 +9,7 @@ import io.github.endreman0.calculator.error.MisplacedTokenException;
 import io.github.endreman0.calculator.error.NoSuchInstanceFunctionException;
 import io.github.endreman0.calculator.error.NoSuchOperatorException;
 import io.github.endreman0.calculator.error.NoSuchStaticFunctionException;
-import io.github.endreman0.calculator.error.ProcessorException;
+import io.github.endreman0.calculator.error.EvaluatorException;
 import io.github.endreman0.calculator.token.FormattingToken;
 import io.github.endreman0.calculator.token.OperatorToken;
 import io.github.endreman0.calculator.token.StringToken;
@@ -23,23 +23,53 @@ import io.github.endreman0.calculator.util.MethodHandler;
 import io.github.endreman0.calculator.util.Operators;
 import io.github.endreman0.calculator.util.Utility;
 
-public class Processor{
-	public static Type process(TokenList tokens) throws ProcessorException{return process(tokens.iterator());}//Processing uses a TokenListIterator, so use the iterator from the input list
-	public static Type process(TokenListIterator tokens) throws ProcessorException{
-		TokenList operators = processFunctions(tokens);//Process all of the functions, so that the token list is just "<operand> <operator> <operand> <operator> <operand>" etc.
-		Type output = processOperators(operators);//Process all of the operators down to one result
+/**
+ * Processes expressions that has already been parsed and calculates the result. There should be no reason to use this class without the Parser, unless you recieve a set of pre-parsed tokens.
+ * @author endreman0
+ */
+public class Evaluator{
+	/**
+	 * Evaluates the given expression.
+	 * @param tokens a {@link io.github.endreman0.calculator.token.TokenList TokenList} representing the expression to parse
+	 * @return the result of the evaluation 
+	 * @throws EvaluatorException if an exception is thrown during the evaluation
+	 */
+	public static Type evaluate(TokenList tokens) throws EvaluatorException{return evaluate(tokens.iterator());}//Processing uses a TokenListIterator, so use the iterator from the input list
+	/**
+	 * Evaluates the given expression.
+	 * @param tokens a {@link io.github.endreman0.calculator.token.TokenList.TokenListIterator TokenListIterator} representing the expression to parse
+	 * @return the result of the evaluation 
+	 * @throws EvaluatorException if an exception is thrown during the evaluation
+	 */
+	public static Type evaluate(TokenListIterator tokens) throws EvaluatorException{
+		TokenList operators = evaluateFunctions(tokens);//Process all of the functions, so that the token list is just "<operand> <operator> <operand> <operator> <operand>" etc.
+		Type output = evaluateOperators(operators);//Process all of the operators down to one result
 		return output;
 	}
-	private static TokenList processFunctions(TokenListIterator iterator) throws ProcessorException{
+	/**
+	 * Processes the functions in an expression, so that only the operators remain.
+	 * This is used internally as the first step of an evaluation: evaluating all of the terms in the expression. Afterward, {@linkplain #evaluateOperators(TokenList) the operators are evaluated}.
+	 * @param iterator The {@linkplain io.github.endreman0.calculator.token.TokenList.TokenListIterator iterator} of the expression to process
+	 * @return A new list of tokens containing only instances of {@link io.github.endreman0.calculator.token.type.Type Type} and operators
+	 * @throws EvaluatorException if an exception is thrown during the evaluation
+	 */
+	private static TokenList evaluateFunctions(TokenListIterator iterator) throws EvaluatorException{
 		TokenList operators = new TokenList();//New list to be returned
 		while(iterator.hasNext() && !(iterator.peek().toParseableString().equals(")")) && !(iterator.peek().toParseableString().equals(","))){//Read until the end of the expression
-			operators.add(processOperand(iterator));//Process one operand (this will iterate over everything until the next operator) 
+			operators.add(evaluateOperand(iterator));//Process one operand (this will iterate over everything until the next operator) 
 			if(iterator.hasNext() && iterator.peek().type().equals(TokenType.OPERATOR))
 				operators.add(iterator.next());//Add the operator
 		}
 		return operators;
 	}
-	private static Type processOperand(TokenListIterator iterator) throws ProcessorException{//Process one operand
+	/**
+	 * Evaluates a single operand in an expression.
+	 * This is used internally in {@link #evaluateFunctions(TokenListIterator)} to evaluate a single term.
+	 * @param iterator the iterator to evaluate from, pointing at the first token of the operand
+	 * @return The operand, evaluated
+	 * @throws EvaluatorException if an exception is thrown during the evaluation
+	 */
+	private static Type evaluateOperand(TokenListIterator iterator) throws EvaluatorException{//Process one operand
 		Token t = iterator.next();
 		Type obj = null;//To-be returned object
 		if(t instanceof StringToken){//Starting with a string means that the operand is either a static function call or a variable.
@@ -48,7 +78,7 @@ public class Processor{
 				expect(iterator.next(), "(");//Start of the function arguments
 				List<Type> argList = new ArrayList<Type>();
 				while(iterator.hasNext() && !(iterator.peek() instanceof FormattingToken)){//Read until the next close paren
-					argList.add(process(iterator));//Process the next expression as an argument
+					argList.add(evaluate(iterator));//Process the next expression as an argument
 					if(iterator.hasNext() && iterator.peek().type().equals(TokenType.ARGUMENT_SEPARATOR))//If there are more arguments
 						iterator.next();//Iterate past argument separator and continue parsing
 					else break;//If end of arguments, stop processing arguments
@@ -69,7 +99,7 @@ public class Processor{
 		}else if(t instanceof Type){//Just an object literal
 			obj = (Type)t;
 		}else if(t.type().equals(TokenType.OPEN_PAREN)){//Parentheses
-			obj = process(iterator);//Read until the paired close parenthesis
+			obj = evaluate(iterator);//Read until the paired close parenthesis
 			expect(iterator.next(), ")");//Read close parenthesis
 		}else throw new MisplacedTokenException(t.toParseableString(), "String, type, or parenthesis");//Unknown input
 		
@@ -80,7 +110,7 @@ public class Processor{
 			expect(iterator.next(), "(");//Iterate over the parenthesis
 			List<Type> argList = new ArrayList<Type>();
 			while(iterator.hasNext() && !(iterator.peek() instanceof FormattingToken)){//For each argument
-				argList.add(process(iterator));//Process the argument
+				argList.add(evaluate(iterator));//Process the argument
 				if(iterator.hasNext() && iterator.peek().type().equals(TokenType.ARGUMENT_SEPARATOR))//If there is another argument after the one just read
 					iterator.next();//Iterate past argument separator and continue processing
 				else break;//Otherwise (end of args), end loop
@@ -96,26 +126,61 @@ public class Processor{
 		}
 		return obj;
 	}
-	//Read the token, and throw an error if it's not the expected token
+	/**
+	 * Read the token, and throw an error if it's not the expected token.
+	 * <br>
+	 * This is used to ensure that tokens represent a valid expression.
+	 * <br>
+	 * This method expects that the passed token is not {@code null}, and that it contains the given text. If either expectations are not met, an exception is thrown.
+	 * @param t the token to test
+	 * @param text the text to expect the token to contain
+	 * @return the input token, if all expectations are met
+	 * @throws MisplacedTokenException if an expectation is not met
+	 */
 	private static Token expect(Token t, String text) throws MisplacedTokenException{
 		if(t == null) throw new MisplacedTokenException(null, text);
 		else if(!t.toParseableString().equals(text)) throw new MisplacedTokenException(t.toParseableString(), text);
 		else return t;
 	}
-	//Expect a token of the given type, and cast it to the type if it is correct
+	/**
+	 * Expect a token of the given type, and cast it to the type if it is correct.
+	 * <br>
+	 * For some parts of the evaluation, the next token read is expected to be of a certain type. This method ensures that is so.
+	 * <br>
+	 * This method expects that the passed token is not {@code null}, that it is of the given type, and that it is an instance of the passed class.
+	 * If any of these expecations are not met, an exception is thrown.
+	 * @param t the token to test
+	 * @param type the type that the token is expected to be
+	 * @param clazz the class that the token is expected to be an instance of
+	 * @return the input token, if all expectations were met
+	 * @throws MisplacedTokenException if an expectation is not met
+	 */
 	private static <T extends Token> T expect(Token t, TokenType type, Class<T> clazz) throws MisplacedTokenException{
 		if(t == null) throw new MisplacedTokenException(null, type.name());
 		else if(!t.type().equals(type)) throw new MisplacedTokenException(t.toParseableString(), type.name());
 		else return clazz.cast(t);
 	}
-	//Abstracted to a method because generics and arrays don't agree. Creating arrays of generic types isn't allowed.
+	/**
+	 * Get the class of each member of an array and return them as an array.
+	 * @param args The {@link io.github.endreman0.calculator.token.type.Type Type}s
+	 * @return The classes
+	 */
 	@SuppressWarnings("unchecked")
 	private static Class<? extends Type>[] getArgTypes(Type[] args){
 		Class<? extends Type>[] types = (Class<? extends Type>[])Array.newInstance(Class.class, args.length);
 		for(int i=0; i<args.length; i++) types[i] = args[i].getClass();
 		return types;
 	}
-	private static Type processOperators(TokenList tokens) throws ProcessorException{
+	/**
+	 * Evaluate an expression of operators and terms.
+	 * <br>
+	 * This method requires that the input tokens consist only of one or more {@link io.github.endreman0.calculator.token.type.Type Type}s, with exactly one Operator between each pair.
+	 * This is achieved by calling {@link #evaluateFunctions(TokenListIterator)} and using the result.
+	 * @param tokens the expression to evaluate
+	 * @return the result of the evaluation
+	 * @throws EvaluatorException if an exception is thrown during the evaluation
+	 */
+	private static Type evaluateOperators(TokenList tokens) throws EvaluatorException{
 		for(int precedence = Operators.MAX_PRECEDENCE; precedence>=Operators.MIN_PRECEDENCE; precedence--){//Start with highest precedence and work down
 			for(Element e = tokens.firstElement().next(); e != null; e = e.next().next()){//Iterate over every other second element (operators)
 				Operators op = expect(e.token(), TokenType.OPERATOR, OperatorToken.class).operator();//Get operator
@@ -137,6 +202,17 @@ public class Processor{
 		}
 		return (Type)tokens.first();//size() == 1 now (because that's when the break executes), so return the only element (the result)
 	}
+	/**
+	 * Invoke the given operator on the two inputs.
+	 * <br>
+	 * If the first element has an operator method that accepts the other type and matches the given symbol, that method is called and the result is returned.
+	 * If a matching method is not found, the commutativity of the operator is checked. If the operator is commutative, the first step is performed again with the two inputs reversed.
+	 * Finally, if the operator is not commutative or no matching commutative method is found, {@code null} is returned.
+	 * @param i1 the first type to operate on
+	 * @param i2 the second type to operate on
+	 * @param op the operator to apply
+	 * @return the result of the operation, or {@code null} if no matching operator was found
+	 */
 	private static Type operate(Type i1, Type i2, Operators op){
 		Method operator = MethodHandler.operator(i1.getClass(), i2.getClass(), op.symbol);//Get the method that represents the operator
 		if(operator != null) return Utility.invokeOperator(operator, i1, i2);

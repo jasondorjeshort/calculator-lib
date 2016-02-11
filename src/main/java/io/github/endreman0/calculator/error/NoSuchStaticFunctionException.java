@@ -2,7 +2,7 @@ package io.github.endreman0.calculator.error;
 
 import io.github.endreman0.calculator.token.type.Type;
 
-public class NoSuchStaticFunctionException extends ProcessorException{
+public class NoSuchStaticFunctionException extends EvaluatorException{
 	private static final long serialVersionUID = 1L;
 	public NoSuchStaticFunctionException(String name, Class<? extends Type>[] args){
 		super(String.format("No static function \"%s\" with args %s", name, format(args)));
