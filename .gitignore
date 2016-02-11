@@ -1,0 +1,21 @@
+#Compiled classes and random artifacts
+target/classes
+target/test-classes
+target/original-*.jar
+target/*-shaded.jar
+
+#Maven config/status/intermediary files
+target/maven-status
+target/maven-archiver
+target/javadoc-bundle-options
+target/surefire-reports/TEST-*.xml
+target/nexus-staging
+target/apidocs
+
+#Random storage/junk folder
+misc/
+
+#Eclipse things
+.classpath
+.project
+.settings/
