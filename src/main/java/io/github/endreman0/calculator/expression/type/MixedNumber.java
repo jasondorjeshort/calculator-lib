@@ -1,4 +1,4 @@
-package io.github.endreman0.calculator.token.type;
+package io.github.endreman0.calculator.expression.type;
 
 import io.github.endreman0.calculator.annotation.Factory;
 import io.github.endreman0.calculator.annotation.Function;
@@ -59,11 +59,6 @@ public class MixedNumber extends Type{
 		int n1 = numerator * other.denominator, n2 = other.numerator * denominator,
 				d = denominator * other.denominator;
 		return valueOf(n1 % n2, d);//Convert to LCD and add numerators
-	}
-	@Operator("+/-")
-	public Set plusOrMinus(MixedNumber other){
-		if(Utility.checkNull(other).numerator == 0) return Set.valueOf(this);
-		else return Set.valueOf(subtract(other), add(other));
 	}
 	
 	@Function

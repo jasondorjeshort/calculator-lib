@@ -1,4 +1,4 @@
-package io.github.endreman0.calculator.token.type;
+package io.github.endreman0.calculator.expression.type;
 
 import java.util.Calendar;
 

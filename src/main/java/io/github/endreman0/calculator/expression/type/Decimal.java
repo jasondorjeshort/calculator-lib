@@ -1,4 +1,4 @@
-package io.github.endreman0.calculator.token.type;
+package io.github.endreman0.calculator.expression.type;
 
 import io.github.endreman0.calculator.annotation.Factory;
 import io.github.endreman0.calculator.annotation.Function;
@@ -18,11 +18,6 @@ public class Decimal extends Type{
 	@Operator("/") public Decimal divide(Decimal other){return valueOf(value / Utility.checkNull(other, "Cannot divide by null").value);}
 	@Operator("%") public Decimal modulus(Decimal other){return valueOf(value % Utility.checkNull(other, "Cannot modulate by null").value);}
 	@Operator("^") public Decimal exponentate(Decimal other){return valueOf(Math.pow(value, Utility.checkNull(other, "Cannot exponentate by null").value));}
-	@Operator("+/-")
-	public Set plusOrMinus(Decimal other){
-		if(Utility.checkNull(other).value == 0) return Set.valueOf(MixedNumber.valueOf(value));
-		else return Set.valueOf(MixedNumber.valueOf(add(other).value), MixedNumber.valueOf(subtract(other).value));
-	}
 	
 	@Function public static Decimal abs(Decimal input){return valueOf(Math.abs(Utility.checkNull(input).value));}
 	@Function

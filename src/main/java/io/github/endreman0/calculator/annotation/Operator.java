@@ -23,5 +23,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Operator{
+	/**
+	 * The annotation's value is the symbol of the operator. This must be the symbol of an {@linkplain io.github.endreman0.calculator.util.Operators operator}.
+	 * <br>
+	 * Because the method is named value, you do not need to specify the name. Simply using {@code {@literal @}Operator("+")}, for example, works.
+	 * @return The operator's symbol
+	 */
 	String value();
 }
