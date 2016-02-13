@@ -69,9 +69,6 @@ public class MixedNumber extends Type{
 	public static MixedNumber abs(MixedNumber number){
 		return valueOf(Math.abs(Utility.checkNull(number, "Cannot take absolute value of null").numerator), number.denominator);
 	}
-	@Function("whole") public MixedNumber fnWhole(){return valueOf(whole());}
-	@Function("numerator") public MixedNumber fnNumerator(){return valueOf(numerator());}
-	@Function("denominator") public MixedNumber fnDenominator(){return valueOf(denominator());}
 	
 	public static MixedNumber cast(Decimal input){
 		Utility.checkNull(input);
@@ -82,11 +79,11 @@ public class MixedNumber extends Type{
 		return valueOf(whole, Integer.parseInt(num), denominator);
 	}
 	
-	public int whole(){return (int)Math.copySign(Math.floorDiv(Math.abs(numerator), denominator), numerator);}//Sign-dependent floor(): rounds closer to zero not down
-	public int numerator(){return numerator % denominator;}
-	public int numeratorImproper(){return numerator;}
-	public int denominator(){return denominator;}
-	public double value(){return (double)numerator / denominator;}
+	@Function public int whole(){return (int)Math.copySign(Math.floorDiv(Math.abs(numerator), denominator), numerator);}//Sign-dependent floor(): rounds closer to zero not down
+	@Function public int numerator(){return numerator % denominator;}
+	@Function public int numeratorImproper(){return numerator;}
+	@Function public int denominator(){return denominator;}
+	@Function public double value(){return (double)numerator / denominator;}
 	public MixedNumber clone(){return new MixedNumber(numerator, denominator);}
 	
 	@Factory({Patterns.INTEGER_COMMAS, Patterns.FRACTION, Patterns.MIXED_NUMBER})
@@ -117,7 +114,7 @@ public class MixedNumber extends Type{
 		return toParseableString();
 	}
 	@Override public int hashCode(){return numerator;}
-	@Override
+	@Override @Function
 	public boolean equals(Object obj){
 		if(obj instanceof MixedNumber){
 			MixedNumber other = (MixedNumber)obj;

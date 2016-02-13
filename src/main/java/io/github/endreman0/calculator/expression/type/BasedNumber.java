@@ -21,6 +21,7 @@ public class BasedNumber extends Type{
 	
 	@Function("base") public MixedNumber fnBase(){return MixedNumber.valueOf(base);}
 	@Function("value") public MixedNumber fnValue(){return MixedNumber.valueOf(value);}
+	@Function("equals") public Switch fnEquals(Switch other){return Switch.valueOf(equals(other));}
 	
 	@Override
 	public boolean equals(Object obj){
