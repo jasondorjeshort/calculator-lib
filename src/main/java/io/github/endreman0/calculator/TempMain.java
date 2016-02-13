@@ -4,6 +4,7 @@ import io.github.endreman0.calculator.expression.Expression;
 import io.github.endreman0.calculator.expression.InstanceFunctionExpression;
 import io.github.endreman0.calculator.expression.OperatorExpression;
 import io.github.endreman0.calculator.expression.StaticFunctionExpression;
+import io.github.endreman0.calculator.expression.Variable;
 import io.github.endreman0.calculator.expression.type.Decimal;
 import io.github.endreman0.calculator.expression.type.MixedNumber;
 
@@ -18,6 +19,12 @@ public class TempMain{
 		
 		print(new StaticFunctionExpression("abs", MixedNumber.valueOf(-5)));
 		print(new StaticFunctionExpression("abs", new InstanceFunctionExpression(Decimal.valueOf(-2), "reciprocal")));
+		
+		print(new OperatorExpression(Variable.get("three"), "=", Decimal.valueOf(3)));
+		print(Variable.get("three"));
+		print(new InstanceFunctionExpression(Variable.get("three"), "reciprocal"));
+		print(new OperatorExpression(Variable.get("three"), "=", Decimal.valueOf(4)));//Tries 3.0 = 4.0, fails
+		print(Variable.get("three"));//4.0
 	}
 	private static void print(Expression e){
 		System.out.println(e + " = " + e.evaluate());
