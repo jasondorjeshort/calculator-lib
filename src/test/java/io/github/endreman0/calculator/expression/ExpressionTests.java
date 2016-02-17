@@ -20,7 +20,6 @@ public class ExpressionTests{
 		test(new InstanceFunctionExpression(MixedNumber.valueOf(3), "reciprocal"), MixedNumber.valueOf(1, 3));
 		test(new InstanceFunctionExpression(MixedNumber.valueOf(3), "equals", MixedNumber.valueOf(3)), Switch.valueOf(true));
 		test(new InstanceFunctionExpression(MixedNumber.valueOf(3), "equals", MixedNumber.valueOf(4)), Switch.valueOf(false));
-		
 	}
 	@Test
 	public void testStaticFunctions(){

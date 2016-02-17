@@ -10,6 +10,7 @@ import io.github.endreman0.calculator.expression.type.Type;
 public class Calculator{
 	/**
 	 * Parse and process the given input and return the type representing the result of the calculation.
+	 * @deprecated Does not work yet
 	 * @param input The expression as a {@link java.lang.String String}
 	 * @return The result of the calculation
 	 */
