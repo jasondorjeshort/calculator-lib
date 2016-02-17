@@ -1,5 +1,6 @@
 package io.github.endreman0.calculator.expression.type;
 
+import io.github.endreman0.calculator.annotation.Caster;
 import io.github.endreman0.calculator.annotation.Factory;
 import io.github.endreman0.calculator.annotation.Function;
 import io.github.endreman0.calculator.annotation.Operator;
@@ -70,13 +71,9 @@ public class MixedNumber extends Type{
 		return valueOf(Math.abs(Utility.checkNull(number, "Cannot take absolute value of null").numerator), number.denominator);
 	}
 	
-	public static MixedNumber cast(Decimal input){
-		Utility.checkNull(input);
-		int whole = (int)Math.floor(input.value());
-		String num = String.valueOf(input.value());
-		num = num.substring(num.indexOf('.')+1);
-		int denominator = (int)Math.pow(10, num.length());
-		return valueOf(whole, Integer.parseInt(num), denominator);
+	@Caster @Function
+	public Decimal toDecimal(){
+		return Decimal.valueOf(this.value());
 	}
 	
 	@Function public int whole(){return (int)Math.copySign(Math.floorDiv(Math.abs(numerator), denominator), numerator);}//Sign-dependent floor(): rounds closer to zero not down

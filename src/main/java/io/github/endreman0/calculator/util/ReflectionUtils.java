@@ -7,6 +7,7 @@ import java.util.List;
 
 import io.github.endreman0.calculator.annotation.Function;
 import io.github.endreman0.calculator.annotation.Operator;
+import io.github.endreman0.calculator.expression.Expression;
 import io.github.endreman0.calculator.expression.type.BasedNumber;
 import io.github.endreman0.calculator.expression.type.Decimal;
 import io.github.endreman0.calculator.expression.type.MixedNumber;
@@ -29,7 +30,7 @@ public class ReflectionUtils{
 		addStaticFunctions(Switch.class);
 		addStaticFunctions(Time.class);
 	}
-	public static Method operator(Type i1, Type i2, String symbol){
+	public static Method operator(Expression i1, Expression i2, String symbol){
 		for(Method m : i1.getClass().getMethods())
 			if(test(m, false, i2.getClass()) && isOperator(m, symbol)) return m;
 		return null;

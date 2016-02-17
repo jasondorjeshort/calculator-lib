@@ -23,10 +23,20 @@ public class TempMain{
 		print(new OperatorExpression(Variable.get("three"), "=", Decimal.valueOf(3)));
 		print(Variable.get("three"));
 		print(new InstanceFunctionExpression(Variable.get("three"), "reciprocal"));
-		print(new OperatorExpression(Variable.get("three"), "=", Decimal.valueOf(4)));//Tries 3.0 = 4.0, fails
-		print(Variable.get("three"));//4.0
+		print(new OperatorExpression(Variable.get("three"), "=", Decimal.valueOf(4)));
+		print(Variable.get("three"));
+		print(new OperatorExpression(
+				Variable.get("three"),
+				"=",
+				new OperatorExpression(
+						MixedNumber.valueOf(1),
+						"+",
+						MixedNumber.valueOf(2)
+				)
+		));
+		print(Variable.get("three"));
 	}
 	private static void print(Expression e){
-		System.out.println(e + " = " + e.evaluate());
+		System.out.println("\"" + e + "\" = " + e.evaluate());
 	}
 }

@@ -20,23 +20,27 @@ public class Variable extends Type{
 		return variables.computeIfAbsent(name, (key) -> new Variable(name, null));
 	}
 	private String name;
-	private Type value;
+	private Expression value;
 	private boolean constant;
-	private Variable(String name, Type value){this(name, value, false);}
-	private Variable(String name, Type value, boolean constant){
+	private Variable(String name, Expression value){this(name, value, false);}
+	private Variable(String name, Expression value, boolean constant){
 		this.name = name; this.value = value; this.constant = constant;
 	}
 	public String name(){return name;}
-	public Type get(){return value;}
+	public Expression get(){return value;}
 	public boolean constant(){return constant;}
 	
 	@Operator("=")
 	public Type set(Type value){
-		this.value = value;
-		return value;
+		if(constant) throw new UnsupportedOperationException("Cannot set constant variable " + name);
+		else{
+			this.value = value;
+			return value;
+		}
 	}
 	
-	@Override protected Type eval() throws ReflectiveOperationException{return value == null ? this : value;}
+	@Override protected Object eval() throws ReflectiveOperationException{return value != null ? value : this;}
+	@Override public boolean isEvaluatable(){return value != null;}
 	@Override public String toParseableString(){return name;}
 	@Override public String toDisplayString(){return name;}
 	@Override public String toDescriptorString(){return "Variable[" + name + "=" + value.toDescriptorString() + "]";}

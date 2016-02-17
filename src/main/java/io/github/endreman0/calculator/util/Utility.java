@@ -23,7 +23,7 @@ public class Utility{
 	}
 	public static Type wrap(Object o){
 		if(o instanceof Type) return (Type)o;
-		else if(o instanceof Expression) return ((Expression)o).evaluate();
+		else if(o instanceof Expression && ((Expression)o).isEvaluatable()) return ((Expression)o).evaluate();
 		else if(o instanceof Boolean) return Switch.valueOf(o.toString());
 		else if(o instanceof Integer) return MixedNumber.valueOf(o.toString());
 		else if(o instanceof Double || o instanceof Float) return Decimal.valueOf(o.toString());

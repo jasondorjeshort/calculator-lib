@@ -1,4 +1,4 @@
-//package io.github.endreman0.calculator.token.type;
+//package io.github.endreman0.calculator.expression.type;
 //
 //import static org.junit.Assert.*;
 //
@@ -8,14 +8,14 @@
 //
 //import io.github.endreman0.calculator.error.CalculatorException;
 //import io.github.endreman0.calculator.token.type.MixedNumber;
-//import io.github.endreman0.calculator.token.type.Set;
+//import io.github.endreman0.calculator.token.type.Vector;
 //
-//public class SetTest{
+//public class VectorTest{
 //	private final MixedNumber[] data = {MixedNumber.valueOf(1), MixedNumber.valueOf(2, 3), MixedNumber.valueOf(-5, 1 ,3)};
-//	private final Set test = Set.valueOf(data);
+//	private final Vector test = Vector.valueOf(data);
 //	@Test
 //	public void testHashCode(){
-//		assertEquals(test.hashCode(), test.clone().hashCode());
+//		assertEquals(test.hashCode(), test.clone().hashCode());//Equal objects must have the same hash code
 //	}
 //	@Test
 //	public void testSize(){
@@ -29,21 +29,18 @@
 //		}
 //	}
 //	@Test
-//	public void testContains(){
-//		for(int i=0; i<data.length; i++) assertTrue(test.contains(data[i]));
-//		assertFalse(test.contains(null));
-//	}
-//	@Test
 //	public void testEquals(){
 //		assertTrue(test.equals(test));
 //		assertTrue(test.equals(test.clone()));
 //		assertFalse(test.equals(null));
+//		Vector v = Vector.valueOf(new MixedNumber[]{MixedNumber.valueOf(3), MixedNumber.valueOf(5)});
+//		assertFalse(test.equals(v));
 //	}
 //	@Test
 //	public void testToString(){
-//		assertEquals("{1 | 2/3 | -5_1/3}", test.toDisplayString());
-//		assertEquals("{1|2/3|-5_1/3}", test.toParseableString());
-//		assertEquals("Set[3]", test.toDescriptorString());
+//		assertEquals("<1 | 2/3 | -5_1/3>", test.toDisplayString());
+//		assertEquals("<1|2/3|-5_1/3>", test.toParseableString());
+//		assertEquals("Vector[3]", test.toDescriptorString());
 //	}
 //	@Test
 //	public void testToArray(){
@@ -51,10 +48,10 @@
 //	}
 //	@Test
 //	public void testValueOfMixedNumberArray(){
-//		assertEquals(test, Set.valueOf(test.toArray()));
+//		assertEquals(test, Vector.valueOf(test.toArray()));
 //	}
 //	@Test
-//	public void testValueOf() throws CalculatorException{
-//		assertEquals(test, Set.valueOf(test.toParseableString()));
+//	public void testValueOfString() throws CalculatorException{
+//		assertEquals(test, Vector.valueOf(test.toParseableString()));
 //	}
 //}
