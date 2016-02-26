@@ -1,7 +1,5 @@
 package io.github.endreman0.calculator;
 
-import java.util.Arrays;
-
 import io.github.endreman0.calculator.expression.Expression;
 import io.github.endreman0.calculator.expression.InstanceFunctionExpression;
 import io.github.endreman0.calculator.expression.OperatorExpression;
@@ -50,11 +48,20 @@ public class TempMain{
 	private static void printParses(){
 		print(Parser.parse("3 * 2"));
 		print(Parser.parse("3.reciprocal() * 2"));
+		print(Parser.parse("abs(3.5)"));
+		print(Parser.parse("[1, 2][3, 4]"));
+		print(Parser.parse("<3, 4>.magnitude()"));
+		print(Parser.parse("{x | x > 0}.contains(3.5)"));
+		print(Parser.parse("([1][2] + [3][4]) * 2.5"));
 	}
 	private static void print(Expression e){
 		System.out.println("\"" + e + "\" = " + e.evaluate());
 	}
 	private static void print(String[] comps){
-		System.out.println(Arrays.toString(comps));
+		for(int i=0; i<comps.length; i++){
+			System.out.print('"' + comps[i] + '"');
+			if(i+1 < comps.length) System.out.print(", ");
+		}
+		System.out.println();
 	}
 }
