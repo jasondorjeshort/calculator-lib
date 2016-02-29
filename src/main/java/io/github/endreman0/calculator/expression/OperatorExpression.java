@@ -63,6 +63,6 @@ public class OperatorExpression extends Expression{
 	}
 	@Override
 	public String toDescriptorString(){
-		return "OperatorExpression[" + e1.toDescriptorString() + "," + op + "," + e1.toDescriptorString() + "]";
+		return "OperatorExpression[" + e1.toDescriptorString() + "," + op + "," + e2.toDescriptorString() + "]";
 	}
 }
