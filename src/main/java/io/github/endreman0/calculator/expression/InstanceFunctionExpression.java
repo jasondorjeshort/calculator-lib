@@ -13,6 +13,9 @@ public class InstanceFunctionExpression extends Expression{
 	public InstanceFunctionExpression(Expression obj, String function, Expression... args){
 		this.obj = obj; this.function = function; this.args = args;
 	}
+	public Expression object(){return obj;}
+	public String function(){return function;}
+	public Expression[] arguments(){return args.clone();}
 	protected Object eval() throws ReflectiveOperationException{
 		Type object = obj.evaluate();
 		Type[] arguments = new Type[args.length];

@@ -18,6 +18,12 @@ public class Decimal extends Type{
 	@Operator("/") public Decimal divide(Decimal other){return valueOf(value / Utility.checkNull(other, "Cannot divide by null").value);}
 	@Operator("%") public Decimal modulus(Decimal other){return valueOf(value % Utility.checkNull(other, "Cannot modulate by null").value);}
 	@Operator("^") public Decimal exponentate(Decimal other){return valueOf(Math.pow(value, Utility.checkNull(other, "Cannot exponentate by null").value));}
+	@Operator("<") public boolean lessThan(Decimal other){return value < Utility.checkNull(other).value;}
+	@Operator(">") public boolean greaterThan(Decimal other){return value > Utility.checkNull(other).value;}
+	@Operator("<=") public boolean lessThanOrEqual(Decimal other){return value <= Utility.checkNull(other).value;}
+	@Operator(">=") public boolean greaterThanOrEqual(Decimal other){return value >= Utility.checkNull(other).value;}
+	@Operator("==") public boolean equals(Decimal other){return value == Utility.checkNull(other).value;}
+	@Operator("!=") public boolean unequals(Decimal other){return value != Utility.checkNull(other).value;}
 	
 	@Function public static Decimal abs(Decimal input){return valueOf(Math.abs(Utility.checkNull(input).value));}
 	@Function

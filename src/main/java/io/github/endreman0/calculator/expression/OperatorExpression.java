@@ -8,12 +8,15 @@ import io.github.endreman0.calculator.expression.type.Type;
 import io.github.endreman0.calculator.util.ReflectionUtils;
 
 public class OperatorExpression extends Expression{
-	private List<String> commutativeOperators = Arrays.asList("+", "*");
+	private static List<String> commutativeOperators = Arrays.asList("+", "*", "&&", "||");
 	private Expression e1, e2;
 	private String op;
 	public OperatorExpression(Expression i1, String op, Expression i2){
 		this.e1 = i1; this.op = op; this.e2 = i2;
 	}
+	public Expression left(){return e1;}
+	public Expression right(){return e2;}
+	public String operator(){return op;}
 	protected Object eval() throws ReflectiveOperationException{
 		Type i1 = e1.evaluate(), i2 = e2.evaluate();
 		boolean commutative = commutativeOperators.contains(op);

@@ -9,7 +9,7 @@ public class Parser{
 	public static String[] parse(String input){return parse(new StringIterator(input)).toArray(new String[0]);}//Parsing works primarily with StringIterators, so immediately wrap the string in an iterator
 	private static List<String> parse(StringIterator input){
 		List<String> tokens = new ArrayList<String>();
-		String[] targets = {".", "(", ")", ",", " ", "[", "]", "<", ">", "{", "}", "|"};//Assemble an array of everything that signifies the end of a token: space,
+		String[] targets = {".", "(", ")", ",", " ", "[", "]", "<", ">", "{", "}"};//Assemble an array of everything that signifies the end of a token: space,
 		
 		while(input.hasNext()){//For all tokens
 			String s = input.readTo(targets);

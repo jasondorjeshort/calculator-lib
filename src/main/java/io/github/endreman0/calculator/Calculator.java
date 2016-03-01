@@ -1,5 +1,6 @@
 package io.github.endreman0.calculator;
 
+import io.github.endreman0.calculator.expression.Expression;
 import io.github.endreman0.calculator.expression.type.Type;
 
 /**
@@ -10,11 +11,12 @@ import io.github.endreman0.calculator.expression.type.Type;
 public class Calculator{
 	/**
 	 * Parse and process the given input and return the type representing the result of the calculation.
-	 * @deprecated Does not work yet
 	 * @param input The expression as a {@link java.lang.String String}
 	 * @return The result of the calculation
 	 */
 	public static Type calculate(String input){
-		return null;
+		String[] tokens = Parser.parse(input);//1) Parse
+		Expression e = Processor.process(tokens);//2) Process
+		return e.evaluate();//3) Evaluate
 	}
 }

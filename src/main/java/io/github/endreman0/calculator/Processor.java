@@ -2,7 +2,6 @@ package io.github.endreman0.calculator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,20 +10,26 @@ import io.github.endreman0.calculator.expression.OperatorExpression;
 import io.github.endreman0.calculator.util.ReflectionUtils;
 
 public class Processor{
+	private static String[][] operators = {
+			{"="},
+			{"&&", "||"},
+			{">", "<", ">=", "<=", "==", "!="},
+			{"+", "-"},
+			{"*", "/", "%"},
+			{"^"}
+	};
 	public static Expression process(String... tokens){
-		return process(new ArrayList<>(Arrays.asList(tokens)));
+		return process(Arrays.asList(tokens));
 	}
 	public static Expression process(List<String> tokens){
-		int ind = Math.max(tokens.lastIndexOf("+"), tokens.lastIndexOf("-"));
-		if(ind > -1){
-			List<String> before = tokens.subList(0, ind), after = tokens.subList(ind+1, tokens.size());
-			return new OperatorExpression(process(before), tokens.get(ind), process(after));
-		}
-		
-		ind = Math.max(tokens.lastIndexOf("*"), tokens.lastIndexOf("/"));
-		if(ind > -1){
-			List<String> before = tokens.subList(0, ind), after = tokens.subList(ind+1, tokens.size());
-			return new OperatorExpression(process(before), tokens.get(ind), process(after));
+		for(int prec=0; prec<operators.length; prec++){//For each precedence bracket, ascending
+			int index = -1;//Find last index of the operators in the current precedence (overall, find least precedent operator in expression)
+			for(String operator : operators[prec]) index = Math.max(index, tokens.lastIndexOf(operator));
+			
+			if(index > -1){
+				List<String> before = tokens.subList(0, index), after = tokens.subList(index+1, tokens.size());
+				return new OperatorExpression(process(before), tokens.get(index), process(after));
+			}
 		}
 		
 		if(tokens.size() == 1){

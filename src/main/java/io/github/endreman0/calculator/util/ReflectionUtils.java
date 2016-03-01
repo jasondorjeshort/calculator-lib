@@ -9,6 +9,7 @@ import io.github.endreman0.calculator.annotation.Factory;
 import io.github.endreman0.calculator.annotation.Function;
 import io.github.endreman0.calculator.annotation.Operator;
 import io.github.endreman0.calculator.expression.Expression;
+import io.github.endreman0.calculator.expression.Variable;
 import io.github.endreman0.calculator.expression.type.BasedNumber;
 import io.github.endreman0.calculator.expression.type.Decimal;
 import io.github.endreman0.calculator.expression.type.MixedNumber;
@@ -32,6 +33,7 @@ public class ReflectionUtils{
 		addStatics(MixedNumber.class);
 		addStatics(Switch.class);
 		addStatics(Time.class);
+		addStatics(Variable.class);
 	}
 	public static Method operator(Expression i1, Expression i2, String symbol){
 		for(Method m : i1.getClass().getMethods())

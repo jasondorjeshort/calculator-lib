@@ -61,6 +61,12 @@ public class MixedNumber extends Type{
 				d = denominator * other.denominator;
 		return valueOf(n1 % n2, d);//Convert to LCD and add numerators
 	}
+	@Operator("<") public boolean lessThan(MixedNumber other){return value() < Utility.checkNull(other).value();}
+	@Operator(">") public boolean greaterThan(MixedNumber other){return value() > Utility.checkNull(other).value();}
+	@Operator("<=") public boolean lessThanOrEqual(MixedNumber other){return value() <= Utility.checkNull(other).value();}
+	@Operator(">=") public boolean greaterThanOrEqual(MixedNumber other){return value() >= Utility.checkNull(other).value();}
+	@Operator("==") public boolean equals(MixedNumber other){return value() == Utility.checkNull(other).value();}
+	@Operator("!=") public boolean unequals(MixedNumber other){return value() != Utility.checkNull(other).value();}
 	
 	@Function
 	public MixedNumber reciprocal(){
@@ -80,6 +86,7 @@ public class MixedNumber extends Type{
 	@Function public int numerator(){return numerator % denominator;}
 	@Function public int numeratorImproper(){return numerator;}
 	@Function public int denominator(){return denominator;}
+	@Function public MixedNumber fraction(){return valueOf(numerator(), denominator);}
 	@Function public double value(){return (double)numerator / denominator;}
 	public MixedNumber clone(){return new MixedNumber(numerator, denominator);}
 	

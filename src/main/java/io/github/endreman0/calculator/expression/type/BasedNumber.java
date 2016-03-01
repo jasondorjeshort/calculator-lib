@@ -15,6 +15,12 @@ public class BasedNumber extends Type{
 	@Operator("*") public BasedNumber multiply(BasedNumber other){return valueOf(base, value * Utility.checkNull(other).value);}
 	@Operator("/") public BasedNumber divide(BasedNumber other){return valueOf(base, value / Utility.checkNull(other).value);}
 	@Operator("%") public BasedNumber modulus(BasedNumber other){return valueOf(base, value % Utility.checkNull(other).value);}
+	@Operator("<") public boolean lessThan(BasedNumber other){return value < Utility.checkNull(other).value;}
+	@Operator(">") public boolean greaterThan(BasedNumber other){return value > Utility.checkNull(other).value;}
+	@Operator("<=") public boolean lessThanOrEqual(BasedNumber other){return value <= Utility.checkNull(other).value;}
+	@Operator(">=") public boolean greaterThanOrEqual(BasedNumber other){return value >= Utility.checkNull(other).value;}
+	@Operator("==") public boolean equals(BasedNumber other){return value == Utility.checkNull(other).value;}
+	@Operator("!=") public boolean unequals(BasedNumber other){return value != Utility.checkNull(other).value;}
 	
 	public int base(){return base;}
 	public int value(){return value;}

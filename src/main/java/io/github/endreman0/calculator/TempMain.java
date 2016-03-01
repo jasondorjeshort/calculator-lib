@@ -10,7 +10,7 @@ import io.github.endreman0.calculator.expression.type.MixedNumber;
 
 public class TempMain{
 	public static void main(String[] args){
-		printProcessing();
+		printCalculations();
 	}
 	private static void printExpressions(){
 		printEvaluation(new OperatorExpression(MixedNumber.valueOf(1), "+", MixedNumber.valueOf(2, 3)));
@@ -71,6 +71,7 @@ public class TempMain{
 	private static void printProcessing(){
 		printProcessed("3", "*", "2");
 		printProcessed("3", "*", "2", "+", "5");
+		printProcessed("seven", "=", "2", "*", "2", "+", "1", "*", "3");
 	}
 	private static void printProcessed(String... tokens){
 		System.out.print('[');
@@ -80,5 +81,22 @@ public class TempMain{
 		}
 		System.out.print("]: ");
 		System.out.println(Processor.process(tokens).toDescriptorString());
+	}
+	private static void printCalculations(){
+		printEvaluated("3 + 2");
+		printEvaluated("nine = 1 + 6 * 2 / 4 - -5");
+		printEvaluated("nine");
+		printEvaluated("three = 5.0 - 2.0");
+		printEvaluated("three");
+		printEvaluated("nine = three ^ 2.0");
+		printEvaluated("nine");
+		printEvaluated("true && false");
+		printEvaluated("true || false");
+		printEvaluated("x = 3.0 < 2.0 || 1.0 > 0.1 && 4 != 5");
+		printEvaluated("x && 3_0/3 == 3");
+	}
+	private static void printEvaluated(String input){
+		System.out.print('"' + input + "\": ");
+		System.out.println(Calculator.calculate(input));
 	}
 }

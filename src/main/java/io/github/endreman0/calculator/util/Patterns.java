@@ -16,5 +16,5 @@ public class Patterns{
 	public static final String SWITCH = "(true|false)";
 	public static final String BASED_NUMBER = INTEGER_COMMAS_UNSIGNED + "x" + "\\-?[0-9a-zA-Z]{1,}";
 	public static final String TIME = INTEGER_UNSIGNED + ":" + INTEGER_UNSIGNED + "(:" + INTEGER_UNSIGNED + ")?";
-	public static final String VARIABLE = "[a-zA-Z][a-zA-Z0-9]{0,}";
+	public static final String VARIABLE = "[a-zA-Z][a-zA-Z0-9]*";
 }

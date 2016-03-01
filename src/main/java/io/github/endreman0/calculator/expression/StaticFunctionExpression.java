@@ -12,6 +12,8 @@ public class StaticFunctionExpression extends Expression{
 	public StaticFunctionExpression(String function, Expression... args){
 		this.function = function; this.args = args;
 	}
+	public String function(){return function;}
+	public Expression[] arguments(){return args.clone();}
 	@Override
 	protected Object eval() throws ReflectiveOperationException{
 		Type[] arguments = new Type[args.length];
