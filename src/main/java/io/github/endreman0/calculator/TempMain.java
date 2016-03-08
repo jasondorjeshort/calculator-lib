@@ -10,7 +10,7 @@ import io.github.endreman0.calculator.expression.type.MixedNumber;
 
 public class TempMain{
 	public static void main(String[] args){
-		printCalculations();
+		printProcessing();
 	}
 	private static void printExpressions(){
 		printEvaluation(new OperatorExpression(MixedNumber.valueOf(1), "+", MixedNumber.valueOf(2, 3)));
