@@ -14,6 +14,8 @@ public class Variable extends Type{
 	public static void initConstants(){
 		init("pi", Math.PI, true);
 		init("e", Math.E, true);
+		init("g", 9.807, true);
+		init("G", 6.67 * Math.pow(10, -11), true);
 	}
 	private static void init(String name, Object value, boolean constant){
 		variables.put(name, new Variable(name, Utility.wrap(value), constant));
