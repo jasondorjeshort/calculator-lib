@@ -35,19 +35,21 @@ public class Decimal extends Type{
 	@Function public static Decimal toDegrees(Decimal input){return valueOf(Math.toDegrees(Utility.checkNull(input).value));}
 	@Function public static Decimal toRadians(Decimal input){return valueOf(Math.toRadians(Utility.checkNull(input).value));}
 	
-	@Function public static Decimal sin(Decimal input){return valueOf(Math.sin(Utility.checkNull(input).value));}
-	@Function public static Decimal cos(Decimal input){return valueOf(Math.cos(Utility.checkNull(input).value));}
-	@Function public static Decimal tan(Decimal input){return valueOf(Math.tan(Utility.checkNull(input).value));}
-	@Function public static Decimal csc(Decimal input){return valueOf(1 / Math.sin(Utility.checkNull(input).value));}
-	@Function public static Decimal sec(Decimal input){return valueOf(1 / Math.cos(Utility.checkNull(input).value));}
-	@Function public static Decimal cot(Decimal input){return valueOf(1 / Math.tan(Utility.checkNull(input).value));}
+	private static double checkRads(Decimal input){return Math.toRadians(Utility.checkNull(input).value);}
+	@Function public static Decimal sin(Decimal input){return valueOf(Math.sin(checkRads(input)));}
+	@Function public static Decimal cos(Decimal input){return valueOf(Math.cos(checkRads(input)));}
+	@Function public static Decimal tan(Decimal input){return valueOf(Math.tan(checkRads(input)));}
+	@Function public static Decimal csc(Decimal input){return valueOf(1 / Math.sin(checkRads(input)));}
+	@Function public static Decimal sec(Decimal input){return valueOf(1 / Math.cos(checkRads(input)));}
+	@Function public static Decimal cot(Decimal input){return valueOf(1 / Math.tan(checkRads(input)));}
 	
-	@Function public static Decimal asin(Decimal input){return valueOf(Math.asin(Utility.checkNull(input).value));}
-	@Function public static Decimal acos(Decimal input){return valueOf(Math.acos(Utility.checkNull(input).value));}
-	@Function public static Decimal atan(Decimal input){return valueOf(Math.atan(Utility.checkNull(input).value));}
-	@Function public static Decimal acsc(Decimal input){return valueOf(1 / Math.asin(Utility.checkNull(input).value));}
-	@Function public static Decimal asec(Decimal input){return valueOf(1 / Math.acos(Utility.checkNull(input).value));}
-	@Function public static Decimal acot(Decimal input){return valueOf(1 / Math.atan(Utility.checkNull(input).value));}
+	private static Decimal toDegrees(double input){return valueOf(Math.toDegrees(input));}
+	@Function public static Decimal asin(Decimal input){return toDegrees(Math.asin(Utility.checkNull(input).value));}
+	@Function public static Decimal acos(Decimal input){return toDegrees(Math.acos(Utility.checkNull(input).value));}
+	@Function public static Decimal atan(Decimal input){return toDegrees(Math.atan(Utility.checkNull(input).value));}
+	@Function public static Decimal acsc(Decimal input){return toDegrees(1 / Math.asin(Utility.checkNull(input).value));}
+	@Function public static Decimal asec(Decimal input){return toDegrees(1 / Math.acos(Utility.checkNull(input).value));}
+	@Function public static Decimal acot(Decimal input){return toDegrees(1 / Math.atan(Utility.checkNull(input).value));}
 	
 	public static Decimal cast(MixedNumber input){return valueOf(Utility.checkNull(input).value());}
 	

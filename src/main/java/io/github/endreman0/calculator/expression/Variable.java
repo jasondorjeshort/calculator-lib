@@ -3,10 +3,8 @@ package io.github.endreman0.calculator.expression;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.github.endreman0.calculator.annotation.Factory;
 import io.github.endreman0.calculator.annotation.Operator;
 import io.github.endreman0.calculator.expression.type.Type;
-import io.github.endreman0.calculator.util.Patterns;
 import io.github.endreman0.calculator.util.Utility;
 
 public class Variable extends Type{
@@ -20,7 +18,6 @@ public class Variable extends Type{
 	private static void init(String name, Object value, boolean constant){
 		variables.put(name, new Variable(name, Utility.wrap(value), constant));
 	}
-	@Factory(Patterns.VARIABLE)
 	public static Variable get(String name){
 		return variables.computeIfAbsent(name, (key) -> new Variable(name, null));
 	}

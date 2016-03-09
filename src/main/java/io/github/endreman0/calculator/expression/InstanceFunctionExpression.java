@@ -1,6 +1,7 @@
 package io.github.endreman0.calculator.expression;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import io.github.endreman0.calculator.expression.type.Type;
 import io.github.endreman0.calculator.util.ReflectionUtils;
@@ -63,5 +64,12 @@ public class InstanceFunctionExpression extends Expression{
 			if(i+1 < args.length) sb.append(',');
 		}
 		return sb.append(']').toString();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(!(o instanceof InstanceFunctionExpression)) return false;
+		InstanceFunctionExpression exp = (InstanceFunctionExpression)o;
+		return obj.equals(exp.obj) && function.equals(exp.function) && Arrays.equals(args, exp.args);
 	}
 }

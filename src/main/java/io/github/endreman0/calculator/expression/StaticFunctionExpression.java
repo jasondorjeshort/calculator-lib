@@ -1,6 +1,7 @@
 package io.github.endreman0.calculator.expression;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import io.github.endreman0.calculator.expression.type.Type;
 import io.github.endreman0.calculator.util.ReflectionUtils;
@@ -61,5 +62,11 @@ public class StaticFunctionExpression extends Expression{
 		}
 		return sb.append(']').toString();
 	}
-
+	
+	@Override
+	public boolean equals(Object obj){
+		if(!(obj instanceof StaticFunctionExpression)) return false;
+		StaticFunctionExpression exp = (StaticFunctionExpression)obj;
+		return function.equals(exp.function) && Arrays.equals(args, exp.args);
+	}
 }

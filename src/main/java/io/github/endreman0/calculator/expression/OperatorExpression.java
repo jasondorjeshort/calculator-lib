@@ -68,4 +68,11 @@ public class OperatorExpression extends Expression{
 	public String toDescriptorString(){
 		return "OperatorExpression[" + e1.toDescriptorString() + "," + op + "," + e2.toDescriptorString() + "]";
 	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if(!(obj instanceof OperatorExpression)) return false;
+		OperatorExpression exp = (OperatorExpression)obj;
+		return e1.equals(exp.e1) && op.equals(exp.op) && e2.equals(exp.e2);
+	}
 }
