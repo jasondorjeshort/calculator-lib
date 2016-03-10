@@ -47,7 +47,7 @@ public class ReflectionUtils{
 	}
 	public static Method staticFunction(String name, Type... args){
 		for(Method m : staticFunctions)
-			if(test(m, true, Utility.getClasses(args)))
+			if(test(m, true, Utility.getClasses(args)) && isFunction(m, name))
 				return m;
 		return null;
 	}
