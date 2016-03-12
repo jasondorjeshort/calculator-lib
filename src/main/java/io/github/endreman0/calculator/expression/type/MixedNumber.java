@@ -82,6 +82,25 @@ public class MixedNumber extends NumericType{
 		if(other instanceof MixedNumber) return modulus((MixedNumber)other);
 		else return Decimal.valueOf(value() % other.value());
 	}
+	@Operator("^")
+	public NumericType exponent(NumericType other){
+		double power = other.value();
+		if(power == 0) return valueOf(1);//Anything ^ 0 == 1
+		if(power % 1 == 0){//Integer power
+			MixedNumber ret = clone();
+			if(power < 0){
+				power = -power;
+				ret = ret.reciprocal();
+			}
+			ret.numerator = (int)Math.pow(ret.numerator, power);
+			ret.denominator = (int)Math.pow(ret.denominator, power);
+			return ret;
+		}else{
+			double ret = Math.pow(value(), power);
+			if(ret % 1 == 0) return valueOf((int)ret);
+			else return Decimal.valueOf(ret);
+		}
+	}
 	
 	@Operator("<") public boolean lessThan(MixedNumber other){return value() < Utility.checkNull(other).value();}
 	@Operator(">") public boolean greaterThan(MixedNumber other){return value() > Utility.checkNull(other).value();}
