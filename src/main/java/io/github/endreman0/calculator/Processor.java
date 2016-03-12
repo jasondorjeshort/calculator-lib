@@ -24,18 +24,18 @@ public class Processor{
 			{"^"}
 	};
 	public static Expression process(String... tokens){
+		return process(Arrays.asList(tokens));
+	}
+	public static Expression process(List<String> tokens){
+		return process((Queue<String>)new LinkedList<>(tokens));
+	}
+	public static Expression process(Queue<String> tokens){
 		try{
-			return process(Arrays.asList(tokens));
+			List<Object> operators = processFunctions(tokens);
+			return processOperators(operators);
 		}catch(ReflectiveOperationException ex){
 			return null;
 		}
-	}
-	private static Expression process(List<String> tokens) throws ReflectiveOperationException{
-		return process((Queue<String>)new LinkedList<>(tokens));
-	}
-	private static Expression process(Queue<String> tokens) throws ReflectiveOperationException{
-		List<Object> operators = processFunctions(tokens);
-		return processOperators(operators);
 	}
 	private static List<Object> processFunctions(Queue<String> tokens) throws ReflectiveOperationException{
 		List<Object> operators = new ArrayList<>();//To return
@@ -53,6 +53,8 @@ public class Processor{
 		Expression obj = null;//To-be-returned
 		if(ReflectionUtils.factory(t) != null){//Type literal
 			obj = (Type)ReflectionUtils.factory(t).invoke(null, t);
+		}else if(ReflectionUtils.complexFactory(t) != null){
+			obj = (Type)ReflectionUtils.complexFactory(t).invoke(null, tokens);
 		}else if(t.equals("(")){//Parentheses
 			obj = process(tokens);
 			tokens.poll();//Read ")"

@@ -3,8 +3,12 @@ package io.github.endreman0.calculator.util;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
+import io.github.endreman0.calculator.annotation.ComplexFactory;
 import io.github.endreman0.calculator.annotation.Factory;
 import io.github.endreman0.calculator.annotation.Function;
 import io.github.endreman0.calculator.annotation.Operator;
@@ -16,15 +20,18 @@ import io.github.endreman0.calculator.expression.type.MixedNumber;
 import io.github.endreman0.calculator.expression.type.Switch;
 import io.github.endreman0.calculator.expression.type.Time;
 import io.github.endreman0.calculator.expression.type.Type;
+import io.github.endreman0.calculator.expression.type.Vector;
 
 public class ReflectionUtils{
 	private static List<Method> factories = new ArrayList<>();
+	private static Map<String, Method> complexFactories = new HashMap<>();
 	private static List<Method> staticFunctions = new ArrayList<>();
-	public static void addStatics(Class<?> clazz){
+	public static void addStatics(Class<? extends Expression> clazz){
 		for(Method m : clazz.getMethods()){
-			if(test(m, true, (Class<?>[])null) && isFunction(m, null))
-				staticFunctions.add(m);
+			if(test(m, true, (Class<?>[])null) && isFunction(m, null)) staticFunctions.add(m);
 			else if(test(m, true, String.class) && m.isAnnotationPresent(Factory.class)) factories.add(m);
+			else if(test(m, true, Queue.class) && m.isAnnotationPresent(ComplexFactory.class))
+				complexFactories.put(m.getAnnotation(ComplexFactory.class).value(), m);//Starting token to method
 		}
 	}
 	static{
@@ -34,6 +41,7 @@ public class ReflectionUtils{
 		addStatics(Switch.class);
 		addStatics(Time.class);
 		addStatics(Variable.class);
+		addStatics(Vector.class);
 	}
 	public static Method operator(Expression i1, Expression i2, String symbol){
 		for(Method m : i1.getClass().getMethods())
@@ -58,6 +66,9 @@ public class ReflectionUtils{
 			}
 		}
 		return null;
+	}
+	public static Method complexFactory(String token){
+		return complexFactories.get(token);
 	}
 	
 	private static boolean test(Method m, boolean isStatic, Class<?>... argTypes){
