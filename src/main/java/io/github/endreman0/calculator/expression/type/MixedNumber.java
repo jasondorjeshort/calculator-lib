@@ -7,7 +7,7 @@ import io.github.endreman0.calculator.annotation.Operator;
 import io.github.endreman0.calculator.util.Patterns;
 import io.github.endreman0.calculator.util.Utility;
 
-public class MixedNumber extends Type{
+public class MixedNumber extends NumericType{
 	private int numerator, denominator;
 	public static MixedNumber valueOf(int whole){return new MixedNumber(whole, 1);}
 	public static MixedNumber valueOf(int numerator, int denominator){return new MixedNumber(numerator, denominator);}
@@ -33,34 +33,56 @@ public class MixedNumber extends Type{
 		else return reductionFactor(denominator, numerator % denominator);
 	}
 	
-	@Operator("+")
 	public MixedNumber add(MixedNumber other){
 		Utility.checkNull(other, "Cannot add null");
 		return valueOf(numerator*other.denominator + other.numerator*denominator, denominator*other.denominator);//Convert to LCD and add numerators
 	}
-	@Operator("-")
 	public MixedNumber subtract(MixedNumber other){
 		Utility.checkNull(other, "Cannot subtract null");
 		return valueOf(numerator*other.denominator - other.numerator*denominator, denominator*other.denominator);//Convert to LCD and add numerators
 	}
-	@Operator("*")
 	public MixedNumber multiply(MixedNumber other){
 		Utility.checkNull(other, "Cannot multiply by null");
 		return valueOf(numerator * other.numerator, denominator * other.denominator);
 	}
-	@Operator("/")
 	public MixedNumber divide(MixedNumber other){
 		Utility.checkNull(other, "Cannot divide by null");
 		if(other.numerator == 0) throw new IllegalArgumentException("Cannot divide by 0");
 		else return multiply(other.reciprocal());
 	}
-	@Operator("%")
 	public MixedNumber modulus(MixedNumber other){
 		Utility.checkNull(other, "Cannot modulate by null");
 		int n1 = numerator * other.denominator, n2 = other.numerator * denominator,
 				d = denominator * other.denominator;
 		return valueOf(n1 % n2, d);//Convert to LCD and add numerators
 	}
+	
+	@Operator("+")
+	public NumericType add(NumericType other){
+		if(other instanceof MixedNumber) return add((MixedNumber)other);
+		else return Decimal.valueOf(value() + other.value());
+	}
+	@Operator("-")
+	public NumericType subtract(NumericType other){
+		if(other instanceof MixedNumber) return subtract((MixedNumber)other);
+		else return Decimal.valueOf(value() - other.value());
+	}
+	@Operator("*")
+	public NumericType multiply(NumericType other){
+		if(other instanceof MixedNumber) return multiply((MixedNumber)other);
+		else return Decimal.valueOf(value() * other.value());
+	}
+	@Operator("/")
+	public NumericType divide(NumericType other){
+		if(other instanceof MixedNumber) return divide((MixedNumber)other);
+		else return Decimal.valueOf(value() / other.value());
+	}
+	@Operator("%")
+	public NumericType modulus(NumericType other){
+		if(other instanceof MixedNumber) return modulus((MixedNumber)other);
+		else return Decimal.valueOf(value() % other.value());
+	}
+	
 	@Operator("<") public boolean lessThan(MixedNumber other){return value() < Utility.checkNull(other).value();}
 	@Operator(">") public boolean greaterThan(MixedNumber other){return value() > Utility.checkNull(other).value();}
 	@Operator("<=") public boolean lessThanOrEqual(MixedNumber other){return value() <= Utility.checkNull(other).value();}
@@ -76,6 +98,7 @@ public class MixedNumber extends Type{
 	public static MixedNumber abs(MixedNumber number){
 		return valueOf(Math.abs(Utility.checkNull(number, "Cannot take absolute value of null").numerator), number.denominator);
 	}
+	public MixedNumber abs(){return abs(this);}
 	
 	@Caster @Function
 	public Decimal toDecimal(){

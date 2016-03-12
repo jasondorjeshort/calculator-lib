@@ -19,10 +19,8 @@ public class VectorTest{
 	}
 	@Test
 	public void testGet(){
-		for(int i=0; i<data.length; i++){
+		for(int i=0; i<data.length; i++)
 			assertEquals(data[i], test.get(i));
-			assertFalse(data[i] == test.get(i));
-		}
 	}
 	@Test
 	public void testEquals(){
@@ -34,20 +32,16 @@ public class VectorTest{
 	}
 	@Test
 	public void testToString(){
-		assertEquals("<1 | 2/3 | -5_1/3>", test.toDisplayString());
-		assertEquals("<1|2/3|-5_1/3>", test.toParseableString());
-		assertEquals("Vector[3]", test.toDescriptorString());
+		assertEquals("<1, 2/3, -5_1/3>", test.toDisplayString());
+		assertEquals("<1, 2/3, -5_1/3>", test.toParseableString());
+		assertEquals("Vector[MixedNumber[1,1],MixedNumber[2,3],MixedNumber[-16,3]]", test.toDescriptorString());
 	}
 	@Test
 	public void testToArray(){
 		assertTrue(Arrays.equals(data, test.toArray()));
 	}
 	@Test
-	public void testValueOfMixedNumberArray(){
+	public void testValueOf(){
 		assertEquals(test, Vector.valueOf(test.toArray()));
-	}
-	@Test
-	public void testValueOfString() throws CalculatorException{
-		assertEquals(test, Vector.valueOf(test.toParseableString()));
 	}
 }

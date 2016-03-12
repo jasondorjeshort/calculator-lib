@@ -13,7 +13,7 @@ import io.github.endreman0.calculator.expression.Expression;
 import io.github.endreman0.calculator.util.Utility;
 
 public class Vector extends Type{
-	private Expression[] components;
+	private NumericType[] components;
 	public static Vector valueOf(Expression... components){return new Vector(check(components));}
 	
 	@ComplexFactory("<")
@@ -26,7 +26,8 @@ public class Vector extends Type{
 		tokens.poll();//Read ">"
 		return valueOf(components.toArray(new Expression[components.size()]));
 	}
-	private Vector(Expression... components){this.components = components;}
+	private Vector(NumericType... components){this.components = components;}
+	private Vector(int size){this(new NumericType[size]);}
 	
 	@Operator("+")
 	public Vector add(Vector other){
@@ -59,13 +60,13 @@ public class Vector extends Type{
 	
 	public int size(){return components.length;}
 	@Function("size") public MixedNumber fnSize(){return MixedNumber.valueOf(size());}
-	public MixedNumber get(int index){return components[index];}
-	@Function public MixedNumber get(MixedNumber index){return get(index.whole());}
+	public NumericType get(int index){return components[index];}
+	@Function public NumericType get(NumericType index){return get((int)Math.floor(index.value()));}
 	@Function
 	public Vector toQuadrant(MixedNumber quadrant){
 		Utility.checkNull(quadrant, "Cannot convert to null quadrant");
 		if(size() != 2) throw new IllegalArgumentException("Cannot change quadrants on " + size() + "D vector (must be 2D)");
-		MixedNumber x = MixedNumber.abs(get(0)), y = MixedNumber.abs(get(1)), negative = MixedNumber.valueOf(-1);
+		NumericType x = get(0).abs(), y = get(1).abs(), negative = MixedNumber.valueOf(-1);
 		switch(quadrant.whole()){
 			case(1): return valueOf(x, y);
 			case(2): return valueOf(x.multiply(negative), y);
@@ -76,8 +77,8 @@ public class Vector extends Type{
 	}
 	@Function
 	public Decimal magnitude(){
-		MixedNumber sum = MixedNumber.valueOf(0);
-		for(Expression number : components) sum = sum.add(number.multiply(number));//a^2 + b^2 + c^2 + ...
+		NumericType sum = MixedNumber.valueOf(0);
+		for(NumericType number : components) sum = sum.add(number.multiply(number));//a^2 + b^2 + c^2 + ...
 		return Decimal.valueOf(Math.sqrt(sum.value()));
 	}
 	@Function
@@ -101,6 +102,12 @@ public class Vector extends Type{
 		for(int i=0; i<size(); i++) ret.components[i] = get(i).multiply(negative);
 		return ret;
 	}
+	private void checkSize(Vector other){
+		Utility.checkNull(other, "Cannot compare to null vector");
+		if(size() != other.size()) throw new IllegalArgumentException("Unequal size: " + size() + " vs " + other.size());
+	}
+	public NumericType[] toArray(){return check(components);}
+	public Vector clone(){return valueOf(components);}
 	
 	@Override
 	public String toParseableString(){
@@ -125,13 +132,30 @@ public class Vector extends Type{
 		StringBuilder sb = new StringBuilder("Vector[");
 		for(int i=0; i<components.length; i++){
 			sb.append(components[i].toDescriptorString());
-			if(i+1 < components.length) sb.append(", ");
+			if(i+1 < components.length) sb.append(',');
 		}
 		return sb.append(']').toString();
 	}
-	private static <E extends Expression> E[] check(E[] components){
+	@Override @Function
+	public boolean equals(Object obj){
+		return obj instanceof Vector ? Arrays.equals(components, ((Vector)obj).components) : false;
+	}
+	@Override
+	public int hashCode(){
+		double sum = 0;
+		for(NumericType component : components) sum += component.value();
+		return (int)sum;
+	}
+	
+	private static NumericType[] check(Expression[] components){
 		Utility.checkNull(components, "Cannot create vector of null components");
-		return Arrays.copyOf(components, components.length);
+		NumericType[] ret = new NumericType[components.length];
+		for(int i=0; i<components.length; i++){
+			Type t = components[i].evaluate();
+			if(t instanceof NumericType) ret[i] = (NumericType)t;
+			else throw new IllegalArgumentException("Vectors may only contain numeric types");
+		}
+		return ret;
 	}
 	private static Expression readComponent(Queue<String> tokens){
 		List<String> ts = new ArrayList<>();
