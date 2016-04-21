@@ -22,7 +22,7 @@ public @interface ComplexFactory{
 	/**
 	 * The starting token for this complex type.
 	 * If the given token is found, this method will be called.
-	 * @return
+	 * @return Starting token of type
 	 */
 	String value();
 }

@@ -4,8 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import io.github.endreman0.calculator.expression.type.Decimal;
+import io.github.endreman0.calculator.expression.type.Matrix;
 import io.github.endreman0.calculator.expression.type.MixedNumber;
 import io.github.endreman0.calculator.expression.type.Type;
+import io.github.endreman0.calculator.expression.type.Vector;
 
 public class FunctionsTest extends BaseTest{
 	@Test
@@ -19,39 +22,39 @@ public class FunctionsTest extends BaseTest{
 		test("1/2.denominator()", integer(2));
 		test("(3 + 2) * 5", integer(25));
 	}
-//	@Test
-//	public void testMatrix(){
-//		test("abs([1|-2][-3|4])", Matrix.valueOf(new MixedNumber[][]{{MixedNumber.valueOf(1), MixedNumber.valueOf(2)}, {MixedNumber.valueOf(3), MixedNumber.valueOf(4)}}));
-//		test("([1|2] + [3|4]) * [5][6]", Matrix.valueOf(new MixedNumber[][]{{MixedNumber.valueOf(56)}}));
-//	}
-//	@Test
-//	public void testVector(){
-//		test("<4|3>.magnitude()", Decimal.valueOf(5));
-//		
-//		test("<5|0>.direction()", Decimal.valueOf(0));
-//		test("<5|5>.direction()", Decimal.valueOf(45));
-//		test("<0|5>.direction()", Decimal.valueOf(90));
-//		test("<0|-5>.direction()", Decimal.valueOf(-90));
-//		test("<-5|-5>.direction()", Decimal.valueOf(-135));
-//		test("(<5|0> + <0|5>).direction()", Decimal.valueOf(45));
-//		test("<-5|-5>.direction()", Decimal.valueOf(-135));
-//		
-//		test("<1|-2|3_1/3>.get(2)", MixedNumber.valueOf(3, 1, 3));
-//		test("<1|-2|3_1/3>.size()", MixedNumber.valueOf(3));
-//		
-//		test("<4|3_1/2|7/10>.opposite()", Vector.valueOf(MixedNumber.valueOf(-4), MixedNumber.valueOf(-3, 1, 2), MixedNumber.valueOf(-7, 10)));
-//		test("<5|5>.quadrant()", MixedNumber.valueOf(1));
-//		test("<-5|5>.quadrant()", MixedNumber.valueOf(2));
-//		test("<-5|-5>.quadrant()", MixedNumber.valueOf(3));
-//		test("<5|-5>.quadrant()", MixedNumber.valueOf(4));
-//		test("<-3|5>.toQuadrant(4)", Vector.valueOf(MixedNumber.valueOf(3), MixedNumber.valueOf(-5)));
-//	}
+	@Test
+	public void testMatrix(){
+		test("abs([1, -2][-3, 4])", Matrix.valueOf(new MixedNumber[][]{{MixedNumber.valueOf(1), MixedNumber.valueOf(2)}, {MixedNumber.valueOf(3), MixedNumber.valueOf(4)}}));
+		test("([1, 2] + [3, 4]) * [5][6]", Matrix.valueOf(new MixedNumber[][]{{MixedNumber.valueOf(56)}}));
+	}
+	@Test
+	public void testVector(){
+		test("<4, 3>.magnitude()", Decimal.valueOf(5));
+		
+		test("<5, 0>.direction()", Decimal.valueOf(0));
+		test("<5, 5>.direction()", Decimal.valueOf(45));
+		test("<0, 5>.direction()", Decimal.valueOf(90));
+		test("<0, -5>.direction()", Decimal.valueOf(-90));
+		test("<-5, -5>.direction()", Decimal.valueOf(-135));
+		test("(<5, 0> + <0, 5>).direction()", Decimal.valueOf(45));
+		test("<-5, -5>.direction()", Decimal.valueOf(-135));
+		
+		test("<1, -2, 3_1/3>.get(2)", MixedNumber.valueOf(3, 1, 3));
+		test("<1, -2, 3_1/3>.size()", MixedNumber.valueOf(3));
+		
+		test("<4, 3_1/2, 7/10>.opposite()", Vector.valueOf(MixedNumber.valueOf(-4), MixedNumber.valueOf(-3, 1, 2), MixedNumber.valueOf(-7, 10)));
+		test("<5, 5>.quadrant()", MixedNumber.valueOf(1));
+		test("<-5, 5>.quadrant()", MixedNumber.valueOf(2));
+		test("<-5, -5>.quadrant()", MixedNumber.valueOf(3));
+		test("<5, -5>.quadrant()", MixedNumber.valueOf(4));
+		test("<-3, 5>.toQuadrant(4)", Vector.valueOf(MixedNumber.valueOf(3), MixedNumber.valueOf(-5)));
+	}
 //	@Test
 //	public void testSet(){
-//		test("{1|-3_1/3|2|4_1/5}.get(0)", MixedNumber.valueOf(1));
-//		test("{1|-3_1/3|2|4_1/5}.size()", MixedNumber.valueOf(4));
-//		test("{1|-3_1/3|2|4_1/5}.contains(-3_1/3)", Switch.valueOf(true));
-//		test("{1|-3_1/3|2|4_1/5}.contains(-1)", Switch.valueOf(false));
+//		test("{1, -3_1/3, 2, 4_1/5}.get(0)", MixedNumber.valueOf(1));
+//		test("{1, -3_1/3, 2, 4_1/5}.size()", MixedNumber.valueOf(4));
+//		test("{1, -3_1/3, 2, 4_1/5}.contains(-3_1/3)", Switch.valueOf(true));
+//		test("{1, -3_1/3, 2, 4_1/5}.contains(-1)", Switch.valueOf(false));
 //	}
 	@Test
 	public void testDecimal(){

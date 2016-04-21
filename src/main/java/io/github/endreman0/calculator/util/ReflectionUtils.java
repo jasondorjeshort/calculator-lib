@@ -16,6 +16,7 @@ import io.github.endreman0.calculator.expression.Expression;
 import io.github.endreman0.calculator.expression.Variable;
 import io.github.endreman0.calculator.expression.type.BasedNumber;
 import io.github.endreman0.calculator.expression.type.Decimal;
+import io.github.endreman0.calculator.expression.type.Matrix;
 import io.github.endreman0.calculator.expression.type.MixedNumber;
 import io.github.endreman0.calculator.expression.type.Switch;
 import io.github.endreman0.calculator.expression.type.Time;
@@ -42,6 +43,7 @@ public class ReflectionUtils{
 		addStatics(Time.class);
 		addStatics(Variable.class);
 		addStatics(Vector.class);
+		addStatics(Matrix.class);
 	}
 	public static Method operator(Expression i1, Expression i2, String symbol){
 		for(Method m : i1.getClass().getMethods())
