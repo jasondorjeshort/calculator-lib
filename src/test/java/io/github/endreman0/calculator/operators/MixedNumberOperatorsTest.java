@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import io.github.endreman0.calculator.expression.type.MixedNumber;
+import io.github.endreman0.calculator.expression.type.Set;
 
 public class MixedNumberOperatorsTest{
 	@Test
@@ -55,12 +56,12 @@ public class MixedNumberOperatorsTest{
 	private void modulus(MixedNumber i1, MixedNumber i2, MixedNumber result){
 		assertEquals(result, i1.modulus(i2));
 	}
-//	@Test
-//	public void testPlusOrMinus(){
-//		plusOrMinus(valueOf(3), valueOf(5), valueOf(-2), valueOf(8));
-//		plusOrMinus(valueOf(2, 1, 5), valueOf(0), valueOf(2, 1, 5));
-//	}
-//	private void plusOrMinus(MixedNumber i1, MixedNumber i2, MixedNumber... results){
-//		assertEquals(Set.valueOf(results), i1.plusOrMinus(i2));
-//	}
+	@Test
+	public void testPlusOrMinus(){
+		plusOrMinus(valueOf(3), valueOf(5), valueOf(-2), valueOf(8));
+		plusOrMinus(valueOf(2, 1, 5), valueOf(0), valueOf(2, 1, 5));
+	}
+	private void plusOrMinus(MixedNumber i1, MixedNumber i2, MixedNumber... results){
+		assertEquals(Set.valueOf(results), i1.plusOrMinus(i2));
+	}
 }

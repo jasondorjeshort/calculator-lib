@@ -41,17 +41,17 @@ public class MatrixOperatorsTest{
 	private void multiply(Matrix i1, MixedNumber i2, Matrix result){
 		assertEquals(result, i1.multiply(i2));
 	}
-	private static Matrix valueOf(String input){
-		String[] tokens = Parser.parse(input);
-		Queue<String> queue = new LinkedList<>(Arrays.asList(tokens));
-		queue.poll();//Remove the leading "[", as the contract of @ComplexFactory says it won't be there
-		return Matrix.valueOf(queue);
-	}
 	@Test
 	public void testDivide(){
 		divide(valueOf("[-1/5, 4_2/3, 5/7]"), MixedNumber.valueOf(-3), valueOf("[1/15, -1_5/9, -5/21]"));
 	}
 	private void divide(Matrix i1, MixedNumber i2, Matrix result){
 		assertEquals(result, i1.divide(i2));
+	}
+	private static Matrix valueOf(String input){
+		String[] tokens = Parser.parse(input);
+		Queue<String> queue = new LinkedList<>(Arrays.asList(tokens));
+		queue.poll();//Remove the leading "[", as the contract of @ComplexFactory says it won't be there
+		return Matrix.valueOf(queue);
 	}
 }

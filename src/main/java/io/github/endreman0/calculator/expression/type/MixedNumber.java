@@ -56,6 +56,10 @@ public class MixedNumber extends NumericType{
 				d = denominator * other.denominator;
 		return valueOf(n1 % n2, d);//Convert to LCD and add numerators
 	}
+	public Set plusOrMinus(MixedNumber other){
+		if(Utility.checkNull(other).numerator == 0) return Set.valueOf(this);
+		else return Set.valueOf(subtract(other), add(other));
+	}
 	
 	@Operator("+")
 	public NumericType add(NumericType other){
@@ -100,6 +104,11 @@ public class MixedNumber extends NumericType{
 			if(ret % 1 == 0) return valueOf((int)ret);
 			else return Decimal.valueOf(ret);
 		}
+	}
+	@Operator("+/-")
+	public Set plusOrMinus(NumericType other){
+		if(Utility.checkNull(other).value() == 0) return Set.valueOf(this);
+		else return Set.valueOf(add(other), subtract(other));
 	}
 	
 	@Operator("<") public boolean lessThan(MixedNumber other){return value() < Utility.checkNull(other).value();}

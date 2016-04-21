@@ -25,6 +25,11 @@ public class Decimal extends NumericType{
 	@Operator(">=") public boolean greaterThanOrEqual(Decimal other){return value >= Utility.checkNull(other).value;}
 	@Operator("==") public boolean equals(Decimal other){return value == Utility.checkNull(other).value;}
 	@Operator("!=") public boolean unequals(Decimal other){return value != Utility.checkNull(other).value;}
+	@Operator("+/-")
+	public Set plusOrMinus(NumericType other){
+		if(Utility.checkNull(other).value() == 0) return Set.valueOf(this);
+		else return Set.valueOf(add(other), subtract(other));
+	}
 	
 	public Decimal abs(){return abs(this);}
 	@Function public static Decimal abs(Decimal input){return valueOf(Math.abs(Utility.checkNull(input).value));}
