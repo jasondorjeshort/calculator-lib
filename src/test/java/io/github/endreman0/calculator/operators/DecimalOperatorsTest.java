@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import io.github.endreman0.calculator.token.type.Decimal;
+import io.github.endreman0.calculator.expression.type.Decimal;
 
 public class DecimalOperatorsTest{
 	@Test

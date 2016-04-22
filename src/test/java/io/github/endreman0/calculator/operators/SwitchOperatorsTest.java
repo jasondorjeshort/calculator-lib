@@ -1,11 +1,11 @@
 package io.github.endreman0.calculator.operators;
 
-import static io.github.endreman0.calculator.token.type.Switch.valueOf;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import io.github.endreman0.calculator.token.type.Switch;
+import io.github.endreman0.calculator.expression.type.Switch;
+import static io.github.endreman0.calculator.expression.type.Switch.valueOf;
 
 public class SwitchOperatorsTest{
 	@Test

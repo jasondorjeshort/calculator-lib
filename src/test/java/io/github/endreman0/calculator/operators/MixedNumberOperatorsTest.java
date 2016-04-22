@@ -1,12 +1,12 @@
 package io.github.endreman0.calculator.operators;
 
-import static io.github.endreman0.calculator.token.type.MixedNumber.valueOf;
+import static io.github.endreman0.calculator.expression.type.MixedNumber.valueOf;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import io.github.endreman0.calculator.token.type.MixedNumber;
-import io.github.endreman0.calculator.token.type.Set;
+import io.github.endreman0.calculator.expression.type.MixedNumber;
+import io.github.endreman0.calculator.expression.type.Set;
 
 public class MixedNumberOperatorsTest{
 	@Test

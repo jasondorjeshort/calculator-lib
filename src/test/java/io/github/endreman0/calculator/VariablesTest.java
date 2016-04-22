@@ -5,24 +5,22 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import io.github.endreman0.calculator.error.CalculatorException;
-import io.github.endreman0.calculator.token.type.Decimal;
-import io.github.endreman0.calculator.token.type.MixedNumber;
-import io.github.endreman0.calculator.token.type.Type;
+import io.github.endreman0.calculator.expression.Variable;
+import io.github.endreman0.calculator.expression.type.Type;
 
-public class VariablesTest{
+public class VariablesTest extends BaseTest{
 	@BeforeClass
 	public static void setUpBeforeClass(){
-		Calculator.initializeVariables();
+		Variable.initConstants();
 	}
 	@Test
-	public void test() throws CalculatorException{
-		test("pi", Decimal.valueOf(Math.PI));
-		test("pi * pi.reciprocal()", Decimal.valueOf(1));
-		test("a = 3", MixedNumber.valueOf(3));
-		test("a + 1", MixedNumber.valueOf(4));
+	public void test(){
+		test("pi", decimal(Math.PI));
+		test("pi * pi.reciprocal()", decimal(1));
+		test("a = 3", integer(3));
+		test("a + 1", integer(4));
 	}
-	private void test(String input, Type output) throws CalculatorException{
+	private void test(String input, Type output){
 		assertEquals(output, Calculator.calculate(input));
 	}
 }

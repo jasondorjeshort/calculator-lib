@@ -1,8 +1,12 @@
 package io.github.endreman0.calculator.util;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Array;
 
-import io.github.endreman0.calculator.token.type.Type;
+import io.github.endreman0.calculator.expression.Expression;
+import io.github.endreman0.calculator.expression.type.Decimal;
+import io.github.endreman0.calculator.expression.type.MixedNumber;
+import io.github.endreman0.calculator.expression.type.Switch;
+import io.github.endreman0.calculator.expression.type.Type;
 
 public class Utility{
 	public static <T> T checkNull(T t){return checkNull(t, "Argument cannot equal null");}
@@ -11,15 +15,18 @@ public class Utility{
 		if(t == null) throw error;
 		else return t;
 	}
-	private static Object invoke(Method method, Object target, Object... args){
-		try{
-			return method.invoke(target, args);
-		}catch(ReflectiveOperationException ex){
-			return null;
-		}
+	@SuppressWarnings("unchecked")
+	public static Class<? extends Type>[] getClasses(Type[] args){
+		Class<? extends Type>[] classes = (Class<? extends Type>[])Array.newInstance(Class.class, args.length);
+		for(int i=0; i<args.length; i++) classes[i] = args[i].getClass();
+		return classes;
 	}
-	public static Type invokeStaticFunction(Method function, Type[] args){return (Type)invoke(function, null, (Object[])args);}
-	public static Type invokeOperator(Method operator, Type i1, Type i2){return (Type)invoke(operator, i1, i2);}
-	public static Type invokeInstanceFunction(Method function, Type obj, Type[] args){return (Type)invoke(function, obj, (Object[])args);}
-	public static Type invokeFactory(Method factory, String input){return (Type)invoke(factory, null, input);}
+	public static Type wrap(Object o){
+		if(o instanceof Type) return (Type)o;
+		else if(o instanceof Expression && ((Expression)o).isEvaluatable()) return ((Expression)o).evaluate();
+		else if(o instanceof Boolean) return Switch.valueOf(o.toString());
+		else if(o instanceof Integer) return MixedNumber.valueOf(o.toString());
+		else if(o instanceof Double || o instanceof Float) return Decimal.valueOf(o.toString());
+		else return null;
+	}
 }

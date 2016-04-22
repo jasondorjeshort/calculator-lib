@@ -1,10 +1,10 @@
 package io.github.endreman0.calculator.operators;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import io.github.endreman0.calculator.token.type.Time;
+import io.github.endreman0.calculator.expression.type.Time;
 
 public class TimeOperatorsTest{
 	@Test

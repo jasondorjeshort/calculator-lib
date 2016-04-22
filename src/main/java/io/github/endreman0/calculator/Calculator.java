@@ -1,9 +1,7 @@
 package io.github.endreman0.calculator;
 
-import io.github.endreman0.calculator.error.CalculatorException;
-import io.github.endreman0.calculator.token.TokenList;
-import io.github.endreman0.calculator.token.type.Decimal;
-import io.github.endreman0.calculator.token.type.Type;
+import io.github.endreman0.calculator.expression.Expression;
+import io.github.endreman0.calculator.expression.type.Type;
 
 /**
  * The main interface with the Calculator library.
@@ -12,21 +10,13 @@ import io.github.endreman0.calculator.token.type.Type;
  */
 public class Calculator{
 	/**
-	 * Initialize constants for the calculation engine.
-	 * The only constant currently implemented is {@code pi}, which takes its value from {@link java.lang.Math#PI}.
-	 */
-	public static void initializeVariables(){
-		Variable.declare("pi", Decimal.valueOf(Math.PI));
-	}
-	/**
 	 * Parse and process the given input and return the type representing the result of the calculation.
 	 * @param input The expression as a {@link java.lang.String String}
 	 * @return The result of the calculation
-	 * @throws CalculatorException If the input is not a valid expression, or the calculation throws an error
 	 */
-	public static Type calculate(String input) throws CalculatorException{
-		TokenList tokens = Parser.parse(input);//Parse the input into a collection of tokens
-		Type output = Evaluator.evaluate(tokens);//Process the tokens into one value
-		return output;
+	public static Type calculate(String input){
+		String[] tokens = Parser.parse(input);//1) Parse
+		Expression e = Processor.process(tokens);//2) Process
+		return e.evaluate();//3) Evaluate
 	}
 }

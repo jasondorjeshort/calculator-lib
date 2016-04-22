@@ -1,7 +1,7 @@
 package io.github.endreman0.calculator.operators;
 
-import static io.github.endreman0.calculator.token.type.BasedNumber.valueOf;
 import static org.junit.Assert.assertEquals;
+import static io.github.endreman0.calculator.expression.type.BasedNumber.valueOf;
 
 import org.junit.Test;
 
