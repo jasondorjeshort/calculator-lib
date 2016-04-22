@@ -5,5 +5,8 @@ This library was originally created in by [Calculator project](https://github.co
 
 All of the difficult code will be in this repository now, so theoretically the only changes that will be made to Calculator is to change the dependency's version number.
 
-## `expression-tree` ![in development](https://img.shields.io/badge/status-development-yellowgreen.svg)
-The `expression-tree` branch is for testing out a new way of parsing input. The idea is to have an `Expression<? extends Type>` class that stores something like a `Promise` for a calculation: it will always evaluate to either an instance of `Type` or an exception, and it isn't necessarily evaluated right after being parsed. For example, functions are the natural child of this behavior; store the expression `3 * x - 2_1/2` in function f and evaluate it whenever f is called.
+
+## `expression-tree` ![complete](https://img.shields.io/badge/status-complete-brightgreen.svg)
+The `expression-tree` method converts input into a tree of expressions, each containing other expression to represent the full input. Expressions can be evaluated recursively to get an answer. For example, the input `"3 + 2 * 5"` would result in `OperatorExpression(Integer(3), "+", OperatorExpression(Integer(2), "*", Integer(5)))`. To evaluate this, you would simply call `evaluate()` on the addition expression. It would evaluate the integer (which evaluates to itself), then the multiplication expression. The multiplication would evaluate the 2 and 5, multiply them, and return 10. The addition expression would then add 3 and 10, and return 13 for its evaluation.
+
+The benefit of this over the previous approach is that expressions can be stored and evaluated on demand. For example, if the equation `f(x) = 3 * x + 2` was inputted, only when the user then called `f(3)` would it be evaluated.
